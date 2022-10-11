@@ -1,1 +1,2 @@
-alert('hello');
+document.getElementsByClassName("radio input");
+element.setAttribute("class", "democlass");
