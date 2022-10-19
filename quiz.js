@@ -6,8 +6,8 @@ let userName = "";
 let email = "";
 let initializer= 0;
 let questions = document.getElementsByClassName("question-box");
-
-let tab_index = 0
+let tabs = document.getElementsByClassName("question-wrapper");
+let tab_index = -1;
 let next_tab;
 
 
@@ -27,16 +27,9 @@ function loadNextTab()
 
 
 initialize();
-let tabs = document.getElementsByClassName("question-wrapper");
-function initialize()
+
+function initialize_radio_inputs()
 {
-    let tabs = document.getElementsByClassName("question-wrapper");
-    for(i=0;i<tabs.length;i++)
-    {
-        tabs[i]
-    }
-
-
     for (var i=0; i <questions.length; i++) {
         var fInput = document.getElementsByClassName("Radio-F")
         var buttonclick = fInput[i];
@@ -71,8 +64,21 @@ function initialize()
     }
 }
 
-
-
+function hide_all_tabs()
+{
+    
+    for(i =0;i<tabs.length;i++)
+    {
+       tabs[i].style.display = "none";
+    }
+}
+function initialize()
+{
+    
+    initialize_radio_inputs();
+    hide_all_tabs();
+    
+}
 
 // The loop that takes each Radio button and gives a score Onclick 
 
@@ -121,29 +127,32 @@ function raiseEngineer()
 
 
 
+
 // Final calculate score
 function CalculateAndLoadFinalPage()
 {
     if(fCounter > cCounter && fCounter > sCounter && fCounter > eCounter )
     {
         finalTab = "F";
-  
+        window.location="http://www.google.com"
     }
     // Complete this 
     else if (cCounter > fCounter && cCounter > sCounter && cCounter > eCounter )
     {
         finalTab = "C";
-
+        goToFinalTab();
     }
+//Complete
     else if(eCounter > fCounter && eCounter > sCounter && eCounter > cCounter )
     {
         finalTab = "E";
-
+        goToFinalTab();
     }
 
     else
     {
         finalTab = "S";
+        goToFinalTab();
     }
 }
 
@@ -155,3 +164,5 @@ function goToFinalTab()
     element.removeAttribute("class","hide");
         
 }
+
+
