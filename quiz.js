@@ -1,168 +1,117 @@
 let cCounter = 0 , fCounter = 0 , sCounter = 0, eCounter = 0;
 let weight = 1;
-
-let finalTab = "";
 let userName = "";
 let email = "";
-let initializer= 0;
-let questions = document.getElementsByClassName("question-box");
-let tabs = document.getElementsByClassName("question-wrapper");
-let tab_index = -1;
-let next_tab;
+let tabIndex = 1;
+let nextTabName = "Q1";
+const founderURL = 'https://abundance-website.webflow.io/founder';
+const socializerURL = 'https://abundance-website.webflow.io/socializer';
+const coachURL = 'https://abundance-website.webflow.io/coach';
+const engineerURL = 'https://abundance-website.webflow.io/engineer';
+let allTabs = document.querySelectorAll('[role="tabpanel"]');
+
+initialize();
 
 
-function GoToNextTab()
+
+function initialize()
 {
-    tab_index++;
-    next_tab = tabs[tab_index]; 
-    LoadNextTab();
+    initializeRadioInputs();
+}
+
+function initializeRadioInputs()
+{
+
+    let inputs = document.getElementsByTagName("input");
+    for(let i=0;i<inputs.length;i++) 
+    {
+        if(inputs[i].getAttribute("perso") == "F")
+            inputs[i].setAttribute("onclick", "raiseFounder()");
+        else if(inputs[i].getAttribute("perso") == "S")
+            inputs[i].setAttribute("onclick",'raiseSocializer()');
+        else if (inputs[i].getAttribute("perso") == "C")
+            inputs[i].setAttribute("onclick",'raiseCoach()');
+        else if(inputs[i].getAttribute("perso") == "E")
+            inputs[i].setAttribute("onclick",'raiseEngineer()');
+    }
+}
+
+function goToNextTab()
+{
+    if(allTabs.length == 0)
+        allTabs = document.querySelectorAll('[role="tabpanel"]');
+    hideCurrentTab();
+    tabIndex++;
+    if(tabIndex < 8)
+        nextTabName = "Q" + tabIndex;
+    else if(tabIndex == 8)
+    {
+        nextTabName = "finaltab"; 
+        setTimeout(calculateResults, 2000);
+    }
+    loadNextTab();
+}
+
+function calculateResults()
+{
+    let resultPage = "";
+    if(fCounter >= sCounter && fCounter >= eCounter && fCounter >= cCounter)
+    {
+        resultPage = founderURL;
+    }
+    else if(cCounter >= fCounter && cCounter >= eCounter && cCounter >= sCounter)
+        resultPage = coachURL;
+    else if(eCounter >= fCounter && eCounter >= sCounter && eCounter >= cCounter)
+        resultPage = engineerURL;
+    else if(sCounter >= fCounter && sCounter >= cCounter && sCounter >= eCounter)
+        resultPage = socializerURL;
+
+    window.location.href = resultPage;
+}
+
+function hideCurrentTab()
+{
+    let currentTab = getTab(nextTabName);
+    currentTab.classList.remove("w--tab-active");
 }
 
 function loadNextTab()
 {
-    // Load next tab by using the next_tab variable
+    let nextTab = getTab(nextTabName);
+    nextTab.classList.add("w--tab-active");
+} 
 
 
-}
-
-
-initialize();
-
-function initialize_radio_inputs()
+function getTab(tabName)
 {
-    for (var i=0; i <questions.length; i++) {
-        var fInput = document.getElementsByClassName("Radio-F")
-        var buttonclick = fInput[i];
-    
-        buttonclick.onclick = function() {
-            raiseFounder()
-        };
-    }
-    
-    for (var j=0; j <questions.length; j++) {
-        var sInput = document.getElementsByClassName("Radio-S")
-        var buttonclick = sInput[j];
-        buttonclick.onclick = function() {
-            raiseSocializer()
-        };
-    }
-    
-    for (var h=0; h < questions.length; h++) {
-        var cInput = document.getElementsByClassName("Radio-C")
-        var buttonclick = cInput[h];
-        buttonclick.onclick = function() {
-            raiseCoach()
-        };
-    }
-    
-    for (var k=0; k < questions.length; k++) {
-        var eInput = document.getElementsByClassName("Radio-E")
-        var buttonclick = eInput[k];
-        buttonclick.onclick = function() {
-            raiseEngineer()
-        };
-    }
-}
-
-function hide_all_tabs()
-{
-    
-    for(i =0;i<tabs.length;i++)
+    for(i =0;i<allTabs.length;i++)
     {
-       tabs[i].style.display = "none";
+        if(allTabs[i].getAttribute("data-w-tab") == tabName)
+            return allTabs[i];
     }
 }
-function initialize()
-{
-    
-    initialize_radio_inputs();
-    hide_all_tabs();
-    
-}
-
-// The loop that takes each Radio button and gives a score Onclick 
-
-
-    
-  
-
-// hidden
-//fInput.setAttribute("onclick", 'raiseFounder()');
-//cInput.setAttribute("onclick",'raiseCreator()');
-//sInput.setAttribute("onclick",'raiseSocializer()');
-//eInput.setAttribute("onclick",'raiseEngineer()');
-    
-
-
-
-
-
-
-      
-    
-
-// Write Adds score to the personality
 
 
 function raiseFounder()
 {
     fCounter += weight;
+    goToNextTab();
 }
 
 function raiseCoach()
 {
     cCounter += weight;
+    goToNextTab();
 }
 
 function raiseSocializer()
 {
     sCounter += weight;
+    goToNextTab();
 }
 
 function raiseEngineer()
 {
     eCounter += weight;
+    goToNextTab();
 }
-
-
-
-
-
-// Final calculate score
-function CalculateAndLoadFinalPage()
-{
-    if(fCounter > cCounter && fCounter > sCounter && fCounter > eCounter )
-    {
-        finalTab = "F";
-        window.location="http://www.google.com"
-    }
-    // Complete this 
-    else if (cCounter > fCounter && cCounter > sCounter && cCounter > eCounter )
-    {
-        finalTab = "C";
-        goToFinalTab();
-    }
-//Complete
-    else if(eCounter > fCounter && eCounter > sCounter && eCounter > cCounter )
-    {
-        finalTab = "E";
-        goToFinalTab();
-    }
-
-    else
-    {
-        finalTab = "S";
-        goToFinalTab();
-    }
-}
-
-
-function goToFinalTab()
-{
-    // load finalTab;
-    let element = document.getElementById(finalTab);
-    element.removeAttribute("class","hide");
-        
-}
-
-
